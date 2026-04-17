@@ -1,0 +1,14 @@
+# 민감정보
+.env
+
+# 엑셀 출력물
+reports/
+
+# Python 캐시
+__pycache__/
+*.pyc
+*.pyo
+
+# 가상환경 (혹시 나중에 전환할 경우 대비)
+venv/
+.venv/

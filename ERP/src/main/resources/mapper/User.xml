@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.UserMapper">
+
+    <!-- PK 기준 조회 -->
+    <select id="findById" parameterType="Long"
+            resultType="com.example.demo.Domain.User">
+        SELECT id, user_pw, is_active
+        FROM users WHERE id = #{id}
+    </select>
+
+    <!-- emp_num 기준 조회 -->
+    <select id="findByEmpNum" parameterType="String"
+            resultType="com.example.demo.Domain.User">
+        SELECT u.id, u.user_pw, u.is_active
+        FROM users u
+        JOIN employees e ON u.id = e.id
+        WHERE e.emp_num = #{emp_num}
+    </select>
+
+    <!-- 전체 조회 -->
+    <select id="findAll" resultType="com.example.demo.Domain.User">
+        SELECT id, user_pw, is_active FROM users
+    </select>
+
+    <!-- 활성/비활성 토글 -->
+    <update id="updateUserActive">
+        UPDATE users SET is_active = #{is_active} WHERE id = #{id}
+    </update>
+
+    <!-- 비밀번호 변경 -->
+    <update id="updatePassword">
+        UPDATE users SET user_pw = #{user_pw} WHERE id = #{id}
+    </update>
+
+    <!-- 신규 사용자 저장 (id = employees.id 명시) -->
+    <insert id="save" parameterType="com.example.demo.Domain.User">
+        INSERT INTO users (id, user_pw, is_active)
+        VALUES (#{id}, #{user_pw}, #{is_active})
+    </insert>
+
+    <!-- 계정 삭제 -->
+    <delete id="deleteById">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <!-- 페이징 조회 -->
+    <select id="findWithPaging" resultType="com.example.demo.Domain.User">
+        SELECT id, user_pw, is_active
+        FROM users
+        ORDER BY id DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 전체 건수 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM users
+    </select>
+
+</mapper>

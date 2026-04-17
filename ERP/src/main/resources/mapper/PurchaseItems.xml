@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.PurchaseItemsMapper">
+
+    <insert id="insert" parameterType="PurchaseItems">
+        INSERT INTO purchase_items (purchase_id, ingredient_id, qty, unit_cost, subtotal)
+        VALUES (#{purchase_id}, #{ingredient_id}, #{qty}, #{unit_cost}, #{subtotal})
+    </insert>
+
+    <!-- 발주 id로 아이템 목록 조회 + ingredients 조인으로 원재료명/단위 포함 -->
+    <select id="findByPurchaseId" parameterType="long" resultType="map">
+        SELECT
+            pi.id,
+            pi.purchase_id,
+            pi.ingredient_id,
+            i.name        AS ingredient_name,
+            i.unit        AS ingredient_unit,
+            pi.qty,
+            pi.unit_cost,
+            pi.subtotal,
+            pi.note
+        FROM purchase_items pi
+        JOIN ingredients i ON pi.ingredient_id = i.id
+        WHERE pi.purchase_id = #{purchaseId}
+        ORDER BY pi.id
+    </select>
+    
+    
+    <!-- 발주 진행 중(ordered)인 원재료 ID 목록 -->
+    <select id="findIngredientIdsWithActiveOrder" resultType="long">
+        SELECT DISTINCT pi.ingredient_id
+        FROM purchase_items pi
+        JOIN purchases p ON pi.purchase_id = p.id
+        WHERE p.status = 'ordered'
+    </select>
+
+    <select id="findAll" resultType="map">
+    SELECT
+        pi.id,
+        pi.purchase_id,
+        pi.ingredient_id,
+        i.name        AS ingredient_name,
+        i.unit        AS ingredient_unit,
+        pi.qty,
+        pi.unit_cost,
+        pi.subtotal,
+        pi.note
+    FROM purchase_items pi
+    LEFT JOIN ingredients i ON pi.ingredient_id = i.id
+    ORDER BY pi.purchase_id DESC, pi.id ASC
+    </select>
+
+</mapper>

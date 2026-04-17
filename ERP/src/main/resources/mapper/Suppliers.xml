@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.SuppliersMapper">
+
+    <!-- 활성 거래처 전체 (드롭다운용) -->
+    <select id="findAll" resultType="Suppliers">
+        SELECT * FROM suppliers
+        WHERE is_active = 1
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 페이징 + 유형 필터 -->
+    <select id="findByPage" parameterType="PageRequest" resultType="Suppliers">
+        SELECT * FROM suppliers
+        WHERE is_active = 1
+        <if test="category != null and category != ''">
+            AND supplier_type = #{category}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND supplier_name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        ORDER BY created_at DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 전체 건수 -->
+    <select id="countAll" parameterType="PageRequest" resultType="int">
+        SELECT COUNT(*) FROM suppliers
+        WHERE is_active = 1
+        <if test="category != null and category != ''">
+            AND supplier_type = #{category}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND supplier_name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <select id="findById" resultType="Suppliers">
+        SELECT * FROM suppliers
+        WHERE id = #{id} AND is_active = 1
+    </select>
+
+    <!-- 거래처별 담당 원재료 목록 -->
+    <select id="findIngredientsBySupplierId" resultType="Ingredients">
+        SELECT
+            i.id, i.name, i.category, i.unit,
+            i.stock_qty, i.min_stock, i.unit_cost,
+            i.supplier_id, i.created_at, i.updated_at,
+            s.supplier_name AS supplier
+        FROM ingredients i
+        LEFT JOIN suppliers s ON i.supplier_id = s.id AND s.is_active = 1
+        WHERE i.supplier_id = #{supplierId}
+        ORDER BY FIELD(i.category,'원두','유제품','시럽/소스','파우더','차류','소모품','기타'), i.name
+    </select>
+
+    <insert id="insert" parameterType="Suppliers"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO suppliers (supplier_name, supplier_type, ceo_name, address, contract_file, note)
+        VALUES (#{supplier_name}, #{supplier_type}, #{ceo_name}, #{address}, #{contract_file}, #{note})
+    </insert>
+
+    <update id="update" parameterType="Suppliers">
+        UPDATE suppliers
+        SET supplier_name = #{supplier_name},
+            supplier_type = #{supplier_type},
+            ceo_name      = #{ceo_name},
+            address       = #{address},
+            contract_file = #{contract_file},
+            note          = #{note}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM suppliers WHERE id = #{id}
+    </delete>
+
+</mapper>

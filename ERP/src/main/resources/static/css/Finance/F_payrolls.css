@@ -1,0 +1,927 @@
+@charset "UTF-8";
+
+/* ===========================
+   CONTENT AREA
+=========================== */
+.content {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--header-height);
+  padding: 32px 36px 60px;
+  min-height: calc(100vh - var(--header-height));
+  background: var(--bg-content);
+  animation: fadeInUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   PAGE HEADER
+=========================== */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title-wrap { display: flex; align-items: center; gap: 14px; }
+.page-icon { font-size: 2rem; line-height: 1; }
+
+.page-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.page-sub { font-size: 0.82rem; color: var(--text-muted); margin: 3px 0 0; }
+
+/* ===========================
+   ALERT
+=========================== */
+.alert-box {
+  background: var(--accent-green-light);
+  color: #15803d;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ===========================
+   FILTER BAR
+=========================== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-input {
+  padding: 9px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-primary);
+  background: #fff;
+  outline: none;
+  transition: var(--transition);
+}
+
+.filter-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(91,110,245,0.1); }
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+.btn {
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: var(--text-white);
+  box-shadow: 0 2px 8px rgba(91,110,245,0.3);
+}
+
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-cancel {
+  background: var(--border-light);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+}
+
+.btn-cancel:hover { background: var(--border); }
+
+.btn-reset {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border);
+  padding: 8px 14px;
+}
+
+.btn-reset:hover { background: var(--border-light); }
+
+/* ===========================
+   TABLE CARD
+=========================== */
+.table-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1.5px solid var(--border-light);
+}
+
+.table-card-header h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ===========================
+   TABLE
+=========================== */
+.payroll-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 900px;
+}
+
+.payroll-table thead tr { background: var(--primary-light); }
+
+.payroll-table th {
+  padding: 13px 14px;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.payroll-table td {
+  padding: 13px 14px;
+  border-top: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.payroll-table tbody tr:hover { background: #fafbff; }
+
+.td-no    { color: var(--text-muted); font-size: 0.82rem; width: 44px; }
+.td-name  { font-weight: 600; color: var(--text-primary); }
+.td-empid { font-family: 'Outfit', monospace; font-size: 0.85rem; color: var(--text-muted); }
+.td-money { font-family: 'Outfit', monospace; font-weight: 600; color: var(--text-primary); }
+.td-deduct { font-family: 'Outfit', monospace; color: var(--accent-red); }
+.td-net   { font-family: 'Outfit', monospace; font-weight: 700; color: var(--accent-green); }
+.td-date  { font-size: 0.82rem; color: var(--text-muted); white-space: nowrap; }
+.td-note  { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.td-actions { white-space: nowrap; }
+
+.empty-row { text-align: center; padding: 60px !important; color: var(--text-muted); }
+
+/* ===========================
+   ICON BUTTONS
+=========================== */
+.btn-icon {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-secondary);
+}
+
+.btn-edit:hover   { background: #fef3c7; border-color: #f59e0b; color: #b45309; }
+.btn-delete:hover { background: var(--accent-red-light); border-color: var(--accent-red); color: var(--accent-red); }
+
+/* ===========================
+   PAGINATION
+=========================== */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1.5px solid var(--border-light);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.page-size-select select {
+  padding: 6px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-family: 'Noto Sans KR', sans-serif;
+  outline: none;
+  cursor: pointer;
+  background: #fff;
+}
+
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Outfit', sans-serif;
+}
+
+.page-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.page-btn.active {
+  background: var(--primary-gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(91, 110, 245, 0.3);
+}
+
+/* ===========================
+   MODAL
+=========================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 27, 75, 0.35);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 440px;
+  animation: fadeInUp 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.modal-wide { max-width: 620px; }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1.5px solid var(--border-light);
+}
+
+.modal-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.modal-close:hover { background: var(--border-light); color: var(--text-primary); }
+
+.modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+/* ===========================
+   AUTH MODAL
+=========================== */
+.auth-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 4px;
+}
+
+.auth-error {
+  font-size: 0.82rem;
+  color: var(--accent-red);
+  font-weight: 600;
+  min-height: 18px;
+}
+
+/* ===========================
+   FORM (모달 내)
+=========================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group-full { grid-column: 1 / -1; }
+
+.form-label { font-size: 0.83rem; font-weight: 600; color: var(--text-primary); }
+.form-label.required::after { content: ' *'; color: var(--accent-red); }
+
+.form-input {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-primary);
+  background: #fafbff;
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.form-input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(91,110,245,0.1); }
+.form-textarea { resize: vertical; min-height: 64px; line-height: 1.6; }
+
+.input-wrap { position: relative; }
+.input-with-unit { padding-right: 36px; text-align: right; font-family: 'Outfit', monospace; font-weight: 600; }
+.input-unit {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* ===========================
+   수동처리 모달 — 직원선택 영역
+=========================== */
+.manual-select-wrap {
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 4px;
+}
+
+.manual-select-wrap .form-label { color: var(--primary); }
+
+/* ===========================
+   잠금 필드 (읽기전용)
+=========================== */
+.field-locked {
+  background: var(--border-light) !important;
+  color: var(--text-muted) !important;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+/* ===========================
+   힌트 / 배지
+=========================== */
+.field-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  min-height: 14px;
+}
+
+.lock-badge {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
+.calc-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 900px) {
+  .content { margin-left: 68px; }
+  .payroll-table th:nth-child(5),
+  .payroll-table td:nth-child(5),
+  .payroll-table th:nth-child(10),
+  .payroll-table td:nth-child(10) { display: none; }
+}
+
+@media (max-width: 600px) {
+  .content { padding: 16px; }
+  .modal, .modal-wide { max-width: 95vw; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+/* ===========================
+   수동처리 모달 (modal-manual)
+=========================== */
+.modal-manual { max-width: 680px; }
+
+/* 헤더 — 타이틀 + 스텝 인디케이터 나란히 */
+.manual-step-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+/* 스텝 인디케이터 */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: auto;
+}
+
+.step-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.step-dot.active {
+  background: var(--primary-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(91,110,245,0.35);
+}
+
+.step-line {
+  width: 32px;
+  height: 2px;
+  background: var(--border);
+}
+
+/* Step 라벨 */
+.step-label {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+}
+
+/* ===========================
+   직원 검색 바
+=========================== */
+.emp-search-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.emp-search-input-wrap {
+  position: relative;
+}
+
+.emp-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.emp-search-input {
+  width: 100%;
+  padding: 9px 13px 9px 36px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-primary);
+  background: #fff;
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.emp-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(91,110,245,0.1);
+}
+
+/* 직위 탭 */
+.emp-tab-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.emp-tab {
+  padding: 6px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.emp-tab:hover  { border-color: var(--primary); color: var(--primary); }
+
+.emp-tab.active {
+  background: var(--primary-gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(91,110,245,0.3);
+}
+
+.emp-count-badge {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  background: var(--border-light);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ===========================
+   직원 선택 테이블
+=========================== */
+.emp-table-wrap {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.emp-select-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+
+.emp-select-table thead tr {
+  background: var(--primary-light);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.emp-select-table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.emp-select-table td {
+  padding: 11px 14px;
+  border-top: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.emp-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.emp-row:hover { background: #f5f6ff; }
+
+.emp-row-selected { background: var(--primary-light) !important; }
+
+.td-empnum { font-family: 'Outfit', monospace; font-size: 0.83rem; color: var(--text-muted); }
+
+/* 라디오 버튼 모양 */
+.emp-radio {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  vertical-align: middle;
+  transition: var(--transition);
+}
+
+.emp-radio-on {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+/* 고용형태 배지 */
+.contract-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+
+.contract-풀타임, .contract-풀 { background: #dcfce7; color: #15803d; }
+.contract-파트타임, .contract-파트 { background: #e0f2fe; color: #0369a1; }
+
+/* 재직상태 배지 */
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+
+.status-active { background: #dcfce7; color: #15803d; }
+.status-leave  { background: var(--border-light); color: var(--text-muted); }
+
+/* ===========================
+   선택 미리보기
+=========================== */
+.emp-selected-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 9px 14px;
+  background: var(--accent-green-light);
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius-sm);
+}
+
+.preview-icon {
+  font-size: 0.9rem;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.preview-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #15803d;
+}
+
+/* ===========================
+   선택된 직원 배너 (Step2)
+=========================== */
+.selected-emp-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--primary-light);
+  border: 1.5px solid rgba(91,110,245,0.2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.banner-emp-icon { font-size: 1.4rem; }
+
+.banner-emp-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.banner-emp-info strong {
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.banner-emp-info span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.btn-change-emp {
+  padding: 5px 12px;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Noto Sans KR', sans-serif;
+  white-space: nowrap;
+}
+
+.btn-change-emp:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* step-body — 스크롤 여유 */
+.step-body {
+  max-height: 82vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .modal-manual { max-width: 95vw; }
+  .emp-tab-row  { gap: 4px; }
+  .step-body    { max-height: 90vh; }
+}
+
+/* ===========================
+   처리 유형 선택 카드 (Step1)
+=========================== */
+.pay-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 8px 0 20px;
+}
+
+.pay-type-card {
+  position: relative;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  background: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.pay-type-card:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(91,110,245,0.12);
+}
+
+.pay-type-card.selected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(91,110,245,0.15);
+}
+
+.pay-type-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.pay-type-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pay-type-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.pay-type-sub {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* 라디오 버튼 (카드 우상단) */
+.pay-type-radio {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  background: #fff;
+  transition: var(--transition);
+  display: block;
+}
+
+.pay-type-radio-on {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: inset 0 0 0 4px #fff;
+}
+
+/* ===========================
+   인센티브 지급액 대형 입력
+=========================== */
+.incentive-amount-wrap {
+  background: var(--primary-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+}
+
+.incentive-amount-input-wrap {
+  margin-top: 10px;
+}
+
+.incentive-amount-input {
+  font-size: 1.6rem !important;
+  font-family: 'Outfit', monospace !important;
+  font-weight: 700 !important;
+  text-align: right;
+  padding-right: 40px !important;
+  color: var(--primary) !important;
+  background: #fff !important;
+  height: 56px;
+}
+
+/* 인센티브 배너 강조색 */
+.incentive-banner {
+  background: linear-gradient(135deg, #fff7ed, #fef3c7) !important;
+  border-color: #fcd34d !important;
+}
+
+@media (max-width: 600px) {
+  .pay-type-grid { grid-template-columns: 1fr; }
+}
+/* ===========================
+   급여 유형 배지 (목록 테이블)
+=========================== */
+.pay-type-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pay-type-badge.salary {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.pay-type-badge.incentive {
+  background: #fef3c7;
+  color: #b45309;
+}

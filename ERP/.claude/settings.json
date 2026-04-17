@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "Bash(git -C \"c:/Users/3class_007/git/ERP_Project\" check-ignore -v \"ERP/DAP/.env\")",
+      "Bash(git -C \"c:/Users/3class_007/git/ERP_Project\" ls-files --error-unmatch \"ERP/DAP/.env\")",
+      "Bash(git -C \"c:/Users/3class_007/git/ERP_Project\" check-ignore -v \"ERP/src/main/resources/application.properties\")",
+      "Bash(echo \"exit=$?\")",
+      "Bash(git -C \"c:/Users/3class_007/git/ERP_Project\" ls-files \"ERP/DAP/.env\" \"ERP/src/main/resources/application.properties\")",
+      "Bash(python -c ':*)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project log --oneline)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project status)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project remote -v)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project rm --cached ERP/.claude/settings.json ERP/DAP/uvicorn.log)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project add .gitignore README.md ERP/src/main/java/com/example/demo/Domain/PageRequest.java ERP/src/main/java/com/example/demo/Domain/Payrolls.java ERP/src/main/java/com/example/demo/Service/HRMService.java ERP/src/main/java/com/example/demo/controller/FinanceController.java ERP/src/main/java/com/example/demo/controller/IngredientsController.java ERP/src/main/java/com/example/demo/controller/MainPageController.java ERP/src/main/java/com/example/demo/controller/ProfileController.java ERP/src/main/java/com/example/demo/mapper/HRMMapper.java ERP/src/main/java/com/example/demo/mapper/PurchaseItemsMapper.java ERP/src/main/resources/mapper/Finance.xml ERP/src/main/resources/mapper/HRM.xml ERP/src/main/resources/mapper/Ingredients.xml ERP/src/main/resources/mapper/PurchaseItems.xml ERP/src/main/resources/static/css/Analysis/analysis.css ERP/src/main/resources/static/css/Ingredients/stock.css ERP/src/main/resources/static/css/Order/OrderDetail.css ERP/src/main/resources/static/css/Product/product.css ERP/src/main/resources/static/css/header.css ERP/src/main/webapp/WEB-INF/views/Analysis/RevenueForecast.jsp ERP/src/main/webapp/WEB-INF/views/Analysis/RevenueInventory.jsp ERP/src/main/webapp/WEB-INF/views/Analysis/RevenueStats.jsp ERP/src/main/webapp/WEB-INF/views/Finance/F_payrolls.jsp ERP/src/main/webapp/WEB-INF/views/Ingredients/ingredient.jsp ERP/src/main/webapp/WEB-INF/views/Ingredients/purchaseList.jsp ERP/src/main/webapp/WEB-INF/views/Ingredients/purchaseOrder.jsp ERP/src/main/webapp/WEB-INF/views/Ingredients/supplierList.jsp ERP/src/main/webapp/WEB-INF/views/MainPage.jsp ERP/src/main/webapp/WEB-INF/views/Order/OrderDetail.jsp ERP/src/main/webapp/WEB-INF/views/Product/product.jsp ERP/src/main/webapp/WEB-INF/views/header.jsp)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project status --short)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project add ERP/DAP/sql/table.sql)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project commit -m ':*)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project push origin jh)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project add README.md ERP/src/main/webapp/WEB-INF/views/header.jsp docs/)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project log --oneline -3)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project rebase -i HEAD~2 --exec \"git commit --amend --no-edit --reset-author\")",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project push --force origin jh)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project add README.md)",
+      "Bash(git -C c:/Users/3class_007/git/ERP_Project commit -m \"README 수정\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\3class_007\\git\\ERP_Project"
+    ]
+  }
+}

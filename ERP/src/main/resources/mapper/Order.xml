@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.OrderMapper">
+
+    <!-- 공통 컬럼 -->
+    <sql id="orderColumns">
+        o.id,
+        o.order_no        AS orderNo,
+        o.total_amount    AS totalAmount,
+        o.discount_amount AS discountAmount,
+        o.final_amount    AS finalAmount,
+        o.payment_type    AS paymentType,
+        o.status,
+        o.note,
+        o.ordered_at      AS orderedAt
+    </sql>
+
+    <!-- 주문 목록 조회 (기존 유지) -->
+    <select id="selectOrderList" resultType="Order">
+        SELECT
+            id,
+            order_no        AS orderNo,
+            total_amount    AS totalAmount,
+            discount_amount AS discountAmount,
+            final_amount    AS finalAmount,
+            payment_type    AS paymentType,
+            status,
+            note,
+            ordered_at      AS orderedAt
+        FROM orders
+        ORDER BY ordered_at DESC
+    </select>
+
+    <!-- 단건 조회 (상태 변경 전 현재 상태 확인용) -->
+    <select id="findById" parameterType="Long" resultType="Order">
+        SELECT <include refid="orderColumns"/>
+        FROM orders o
+        WHERE o.id = #{id}
+    </select>
+
+    <!-- 페이지네이션 + 필터 -->
+    <select id="findByPage" parameterType="OrderPageRequest" resultType="Order">
+        SELECT <include refid="orderColumns"/>
+        FROM orders o
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (o.order_no     LIKE CONCAT('%', #{keyword}, '%')
+                  OR o.payment_type LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="status != null and status != ''">
+                AND o.status = #{status}
+            </if>
+            <if test="dateFrom != null and dateFrom != ''">
+                AND DATE(o.ordered_at) >= #{dateFrom}
+            </if>
+            <if test="dateTo != null and dateTo != ''">
+                AND DATE(o.ordered_at) &lt;= #{dateTo}
+            </if>
+        </where>
+        ORDER BY o.ordered_at DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 전체 건수 (필터 포함) -->
+    <select id="countAll" parameterType="OrderPageRequest" resultType="int">
+        SELECT COUNT(*)
+        FROM orders o
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (o.order_no     LIKE CONCAT('%', #{keyword}, '%')
+                  OR o.payment_type LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="status != null and status != ''">
+                AND o.status = #{status}
+            </if>
+            <if test="dateFrom != null and dateFrom != ''">
+                AND DATE(o.ordered_at) >= #{dateFrom}
+            </if>
+            <if test="dateTo != null and dateTo != ''">
+                AND DATE(o.ordered_at) &lt;= #{dateTo}
+            </if>
+        </where>
+    </select>
+
+    <!-- 주문 상세 아이템 조회 (재고 차감 + 모달 표시용) -->
+    <select id="findItemsByOrderId" parameterType="Long" resultType="OrderItem">
+        SELECT
+            oi.id,
+            oi.order_id   AS orderId,
+            oi.menu_id    AS menuId,
+            oi.qty,
+            oi.unit_price AS unitPrice,
+            oi.subtotal,
+            m.name        AS menuName
+        FROM order_items oi
+        LEFT JOIN menus m ON oi.menu_id = m.id
+        WHERE oi.order_id = #{orderId}
+    </select>
+
+    <!-- 주문 등록 -->
+    <insert id="insertOrder" parameterType="Order"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders (
+            order_no, total_amount, discount_amount,
+            final_amount, payment_type, status, note
+        ) VALUES (
+            #{orderNo}, #{totalAmount}, #{discountAmount},
+            #{finalAmount}, #{paymentType}, #{status}, #{note}
+        )
+    </insert>
+
+    <!-- 주문 상세 항목 등록 -->
+    <insert id="insertOrderItem" parameterType="OrderItem">
+        INSERT INTO order_items (
+            order_id, menu_id, qty, unit_price, subtotal
+        ) VALUES (
+            #{orderId}, #{menuId}, #{qty}, #{unitPrice}, #{subtotal}
+        )
+    </insert>
+
+    <!-- 판매 가능한 메뉴 목록 -->
+    <select id="selectMenuList" resultType="Menu">
+        SELECT
+            id,
+            category_id AS categoryId,
+            name,
+            description,
+            price,
+            cost,
+            is_available AS isAvailable
+        FROM menus
+        WHERE is_available = 1
+        ORDER BY category_id, name
+    </select>
+
+    <!-- 상태 변경 -->
+    <update id="updateOrderStatus" parameterType="Order">
+        UPDATE orders
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 주문 삭제 -->
+    <delete id="deleteOrder" parameterType="Long">
+        DELETE FROM orders WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.HRMMapper">
+
+    <!-- ===================== EMPLOYEES ===================== -->
+
+    <!-- npm_num 기준 직원 조회 -->
+    <select id="selectEmployeeByNpmNum" parameterType="String"
+            resultType="com.example.demo.Domain.Employees">
+        SELECT * FROM employees WHERE npm_num = #{npm_num}
+    </select>
+
+    <!-- 전체 직원 조회 -->
+    <select id="selectAllEmployees" resultType="com.example.demo.Domain.Employees">
+        SELECT * FROM employees
+    </select>
+
+    <!-- 단일 직원 조회 -->
+    <select id="selectEmployeeById" parameterType="String"
+            resultType="com.example.demo.Domain.Employees">
+        SELECT * FROM employees WHERE emp_num = #{emp_num}
+    </select>
+
+    <!-- 재직자만 조회 -->
+    <select id="selectActiveEmployees" resultType="com.example.demo.Domain.Employees">
+        SELECT * FROM employees WHERE is_active >= 1
+    </select>
+
+    <!-- 퇴사자만 조회 -->
+    <select id="selectResignedEmployees" resultType="com.example.demo.Domain.Employees">
+        SELECT * FROM employees WHERE is_active = 0
+    </select>
+
+    <!-- 직원 검색 (이름, 직책, 재직여부 필터) -->
+    <select id="searchEmployees" resultType="com.example.demo.Domain.Employees">
+        SELECT * FROM employees
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="position != null and position != ''">
+                AND position = #{position}
+            </if>
+            <if test="is_active != null">
+                AND is_active = #{is_active}
+            </if>
+        </where>
+    </select>
+
+    <!-- 직원 등록 -->
+    <insert id="insertEmployee" parameterType="com.example.demo.Domain.Employees">
+        INSERT INTO employees (
+            emp_num, name, age, phone, position, contract_type,
+            hourly_wage, monthly_salary, hire_date, resign_date,
+            profile, bank_name, account_no, is_active
+        ) VALUES (
+            #{emp_num}, #{name}, #{age}, #{phone}, #{position}, #{contract_type},
+            #{hourly_wage}, #{monthly_salary}, #{hire_date}, #{resign_date},
+            #{profile}, #{bank_name}, #{account_no}, 1
+        )
+    </insert>
+
+    <!-- 프로필 사진만 업데이트 -->
+    <update id="updateProfile">
+        UPDATE employees SET profile = #{profile} WHERE emp_num = #{empNum}
+    </update>
+
+    <!-- emp_num → employees.id 조회 -->
+    <select id="selectEmployeeIdByEmpNum" parameterType="String" resultType="Long">
+        SELECT id FROM employees WHERE emp_num = #{emp_num}
+    </select>
+
+    <!-- 직원 정보 수정 -->
+    <update id="updateEmployee" parameterType="com.example.demo.Domain.Employees">
+        UPDATE employees SET
+            emp_num         = #{emp_num},
+            name            = #{name},
+            age             = #{age},
+            phone           = #{phone},
+            position        = #{position},
+            contract_type   = #{contract_type},
+            hourly_wage     = #{hourly_wage},
+            monthly_salary  = #{monthly_salary},
+            hire_date       = #{hire_date},
+            resign_date     = #{resign_date},
+            profile         = #{profile},
+            bank_name       = #{bank_name},
+            account_no      = #{account_no},
+            is_active       = #{is_active}
+        WHERE emp_num = #{emp_num}
+    </update>
+
+    <!-- users 삭제 (FK 해제용) -->
+    <delete id="deleteUserByEmployeeId">
+        DELETE FROM users WHERE id = #{employee_id}
+    </delete>
+
+    <!-- attendances 삭제 (FK 해제용) -->
+    <delete id="deleteAttendancesByEmployeeId">
+        DELETE FROM attendances WHERE employee_id = #{employee_id}
+    </delete>
+
+    <!-- 직원 물리 삭제 -->
+    <delete id="deleteEmployee" parameterType="String">
+        DELETE FROM employees WHERE emp_num = #{emp_num}
+    </delete>
+
+    <!-- ===================== ATTENDANCES ===================== -->
+
+    <!-- 달력 근태 조회 -->
+    <select id="getAttendanceByDate" parameterType="String"
+            resultType="com.example.demo.Domain.Attendances">
+        SELECT * FROM attendances WHERE work_date = #{date}
+    </select>
+
+    <!-- 달력 월별 출근 집계 -->
+    <select id="getAttendanceCountByMonth" resultType="map">
+        SELECT work_date, COUNT(*) AS count
+        FROM attendances
+        WHERE YEAR(work_date)  = #{year}
+          AND MONTH(work_date) = #{month}
+        GROUP BY work_date
+    </select>
+
+    <!-- 근태 상세 — 재직 직원 전체 + 해당 날짜 LEFT JOIN -->
+    <select id="getAttendanceWithEmployees" parameterType="String" resultType="map">
+        SELECT
+            e.id            AS employee_id,
+            e.emp_num,
+            e.name,
+            e.position,
+            e.contract_type,
+            e.profile,
+            a.work_date,
+            a.clock_in,
+            a.clock_out,
+            a.work_hours,
+            a.note
+        FROM employees e
+        LEFT JOIN attendances a
+            ON e.id = a.employee_id
+            AND a.work_date = #{date}
+        WHERE e.is_active = 1
+        ORDER BY e.id ASC
+    </select>
+
+    <!-- 근태 상세 페이징 -->
+    <select id="getAttendanceWithEmployeesPaged" resultType="map">
+        SELECT
+            e.id         AS employee_id,
+            e.emp_num,
+            e.name,
+            a.work_date,
+            a.clock_in,
+            a.clock_out,
+            a.work_hours,
+            a.note
+        FROM employees e
+        LEFT JOIN attendances a
+            ON e.id = a.employee_id
+            AND a.work_date = #{date}
+        WHERE e.is_active = 1
+        ORDER BY e.id ASC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 근태 상세 전체 인원 수 (페이징용) -->
+    <select id="countAttendanceWithEmployees" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM employees
+        WHERE is_active = 1
+    </select>
+
+    <!-- 근태 상세 구버전 -->
+    <select id="getAttendanceDetail" parameterType="String" resultType="map">
+        SELECT
+            a.id,
+            a.employee_id,
+            e.name,
+            a.clock_in,
+            a.work_hours,
+            a.note
+        FROM attendances a
+        JOIN employees e ON a.employee_id = e.emp_num
+        WHERE a.work_date = #{date}
+    </select>
+
+    <!-- 존재 여부 확인 -->
+    <select id="existsAttendance" resultType="int">
+        SELECT COUNT(*)
+        FROM attendances
+        WHERE employee_id = #{employee_id}
+          AND work_date   = #{work_date}
+    </select>
+
+    <!-- 근태 INSERT -->
+    <insert id="insertAttendance" parameterType="com.example.demo.Domain.Attendances">
+        INSERT INTO attendances (employee_id, work_date, clock_in, clock_out, work_hours, note)
+        VALUES (#{employee_id}, #{work_date}, #{clock_in}, #{clock_out}, #{work_hours}, #{note})
+    </insert>
+
+    <!-- 근태 UPDATE -->
+    <update id="updateAttendance" parameterType="com.example.demo.Domain.Attendances">
+        UPDATE attendances
+        SET
+            clock_in  = #{clock_in},
+            clock_out = #{clock_out},
+            note      = #{note}
+        WHERE employee_id = #{employee_id}
+          AND work_date   = #{work_date}
+    </update>
+        <!-- ===== [추가] 직원 페이징 조회 ===== -->
+<select id="searchEmployeesWithPaging" resultType="com.example.demo.Domain.Employees">
+    SELECT * FROM employees
+    <where>
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="position != null and position != ''">
+            AND position = #{position}
+        </if>
+        <if test="is_active != null">
+            AND is_active = #{is_active}
+        </if>
+    </where>
+    ORDER BY FIELD(position, '점장', '매니저', '스탭'), FIELD(contract_type, 'full', 'part'), id ASC
+    LIMIT #{size} OFFSET #{offset}
+</select>
+    
+<!-- ===== [추가] 직원 전체 개수 ===== -->
+<select id="countEmployees" resultType="int">
+    SELECT COUNT(*) FROM employees
+    <where>
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="position != null and position != ''">
+            AND position = #{position}
+        </if>
+        <if test="is_active != null">
+            AND is_active = #{is_active}
+        </if>
+    </where>
+</select>   
+
+</mapper>

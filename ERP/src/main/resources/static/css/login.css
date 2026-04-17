@@ -1,0 +1,263 @@
+@charset "UTF-8";
+
+/* ===========================
+   LOGIN PAGE — login.css
+   header.css 변수 시스템 사용
+   (header.jsp include 없는 독립 페이지)
+=========================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', 'Outfit', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-main);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===========================
+   배경 장식 원형
+=========================== */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  right: -150px;
+  background: radial-gradient(circle, rgba(91, 110, 245, 0.08) 0%, transparent 70%);
+}
+
+body::after {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+}
+
+/* ===========================
+   로그인 컨테이너
+=========================== */
+.login-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 16px;
+  animation: loginFadeUp 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes loginFadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   로고 영역
+=========================== */
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logo-icon {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 10px;
+  animation: loginFadeUp 0.45s 0.1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.login-logo-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+  animation: loginFadeUp 0.45s 0.15s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.login-logo-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  animation: loginFadeUp 0.45s 0.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ===========================
+   로그인 카드
+=========================== */
+.login-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  border: 1.5px solid var(--border);
+  box-shadow: 0 8px 40px rgba(91, 110, 245, 0.1);
+  padding: 36px 40px 32px;
+  animation: loginFadeUp 0.45s 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.login-card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  letter-spacing: -0.3px;
+}
+
+/* ===========================
+   폼 그룹
+=========================== */
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.login-label {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.login-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 13px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 14px 12px 40px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-primary);
+  background: #fafbff;
+  outline: none;
+  transition: var(--transition);
+}
+
+.login-input:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(91, 110, 245, 0.1);
+}
+
+.login-input::placeholder {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+/* ===========================
+   에러 메시지
+=========================== */
+.login-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--accent-red-light);
+  color: var(--accent-red);
+  border: 1.5px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+/* ===========================
+   로그인 버튼
+=========================== */
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--primary-gradient);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(91, 110, 245, 0.35);
+  transition: var(--transition);
+  letter-spacing: 0.3px;
+  margin-top: 4px;
+}
+
+.login-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(91, 110, 245, 0.45);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+/* ===========================
+   하단 링크
+=========================== */
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.83rem;
+  color: var(--text-muted);
+}
+
+.login-footer a,
+.login-footer button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.83rem;
+  font-weight: 600;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+  padding: 0;
+}
+
+.login-footer a:hover,
+.login-footer button:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+/* ===========================
+   반응형
+=========================== */
+@media (max-width: 480px) {
+  .login-card   { padding: 28px 24px; }
+  .login-wrap   { padding: 16px 12px; }
+}

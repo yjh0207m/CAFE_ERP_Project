@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.NoticeMapper">
+
+    <!-- 전체 목록 (활성, 최신순) -->
+    <select id="findAll" resultType="Notice">
+        SELECT id, title, content, importance, writer, is_active, created_at, updated_at
+        FROM notices
+        WHERE is_active = 1
+        ORDER BY
+            FIELD(importance, 'urgent', 'important', 'normal'),
+            created_at DESC
+    </select>
+
+    <!-- 페이징 목록 (중요도 필터 포함) -->
+    <select id="findPaged" resultType="Notice">
+        SELECT id, title, content, importance, writer, is_active, created_at, updated_at
+        FROM notices
+        WHERE is_active = 1
+        <if test="importance != null and importance != ''">
+            AND importance = #{importance}
+        </if>
+        ORDER BY FIELD(importance, 'urgent', 'important', 'normal'), created_at DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 전체/중요도별 개수 -->
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM notices
+        WHERE is_active = 1
+        <if test="importance != null and importance != ''">
+            AND importance = #{importance}
+        </if>
+    </select>
+
+    <!-- 최근 N개 (헤더 드롭다운용) -->
+    <select id="findRecent" resultType="Notice">
+        SELECT id, title, content, importance, writer, is_active, created_at, updated_at
+        FROM notices
+        WHERE is_active = 1
+        ORDER BY
+            FIELD(importance, 'urgent', 'important', 'normal'),
+            created_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 최근 7일 새 공지 수 (헤더 뱃지용) -->
+    <select id="countRecent" resultType="int">
+        SELECT COUNT(*)
+        FROM notices
+        WHERE is_active = 1
+          AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+    </select>
+
+    <!-- 단건 조회 -->
+    <select id="findById" resultType="Notice">
+        SELECT id, title, content, importance, writer, is_active, created_at, updated_at
+        FROM notices
+        WHERE id = #{id} AND is_active = 1
+    </select>
+
+    <!-- 등록 -->
+    <insert id="insert" parameterType="Notice" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notices (title, content, importance, writer)
+        VALUES (#{title}, #{content}, #{importance}, #{writer})
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="Notice">
+        UPDATE notices
+        SET title      = #{title},
+            content    = #{content},
+            importance = #{importance},
+            writer     = #{writer}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 삭제 (소프트 딜리트) -->
+    <update id="delete">
+        UPDATE notices SET is_active = 0 WHERE id = #{id}
+    </update>
+
+</mapper>

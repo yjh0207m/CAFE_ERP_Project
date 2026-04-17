@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.FinanceMapper">
+
+    <!-- ===================== EXPENSE ===================== -->
+
+    <!-- 등록 -->
+    <!-- status=1: 지출 고정, registered_by: 현재 로그인 사용자의 employees.id -->
+    <insert id="insertExpense" parameterType="FinanceExpense">
+        INSERT INTO expenses (
+            expense_type, amount, expense_date,
+            description, receipt_path, registered_by, status
+        ) VALUES (
+            #{expenseType}, #{amount}, #{expenseDate},
+            #{description}, #{receiptPath}, #{registeredBy}, #{status}
+        )
+    </insert>
+
+    <!-- 전체 목록 (기존 — 삭제 보류) -->
+    <select id="selectExpenseList" resultType="FinanceExpense">
+        SELECT
+            e.id,
+            e.expense_type  AS expenseType,
+            e.amount,
+            e.expense_date  AS expenseDate,
+            e.description,
+            e.receipt_path  AS receiptPath,
+            e.registered_by AS registeredBy,
+            emp.name        AS registeredByName,
+            e.created_at    AS createdAt
+        FROM expenses e
+        LEFT JOIN users     u   ON e.registered_by = u.id
+        LEFT JOIN employees emp ON u.id = emp.id
+        ORDER BY e.created_at DESC
+    </select>
+
+    <!-- 페이징 목록 — status=1(지출)만 조회 -->
+    <select id="findExpenseByPage" parameterType="PageRequest" resultType="FinanceExpense">
+        SELECT
+            e.id,
+            e.expense_type  AS expenseType,
+            e.amount,
+            e.expense_date  AS expenseDate,
+            e.description,
+            e.receipt_path  AS receiptPath,
+            e.registered_by AS registeredBy,
+            e.status,
+            emp.name        AS registeredByName,
+            e.created_at    AS createdAt
+        FROM expenses e
+        LEFT JOIN employees emp ON e.registered_by = emp.id
+        <where>
+            AND e.status = 1
+            <if test="expenseType != null and expenseType != ''">
+                AND e.expense_type = #{expenseType}
+            </if>
+            <if test="dateFrom != null and dateFrom != ''">
+                AND e.expense_date &gt;= #{dateFrom}
+            </if>
+            <if test="dateTo != null and dateTo != ''">
+                AND e.expense_date &lt;= #{dateTo}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND e.description LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        ORDER BY e.created_at DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 전체 건수 — status=1(지출)만 카운트 -->
+    <select id="countExpense" parameterType="PageRequest" resultType="int">
+        SELECT COUNT(*)
+        FROM expenses e
+        <where>
+            AND e.status = 1
+            <if test="expenseType != null and expenseType != ''">
+                AND e.expense_type = #{expenseType}
+            </if>
+            <if test="dateFrom != null and dateFrom != ''">
+                AND e.expense_date &gt;= #{dateFrom}
+            </if>
+            <if test="dateTo != null and dateTo != ''">
+                AND e.expense_date &lt;= #{dateTo}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND e.description LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 영수증 경로만 업데이트 -->
+    <update id="updateReceiptPath">
+        UPDATE expenses
+        SET receipt_path = #{receiptPath}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 수정 -->
+    <update id="updateExpense" parameterType="FinanceExpense">
+        UPDATE expenses
+        SET
+            expense_type = #{expenseType},
+            amount       = #{amount},
+            expense_date = #{expenseDate},
+            description  = #{description},
+            receipt_path = #{receiptPath}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="deleteExpense" parameterType="long">
+        DELETE FROM expenses WHERE id = #{id}
+    </delete>
+
+
+    <!-- ===================== PAYROLL ===================== -->
+
+    <!-- 전체 목록 (기존 — 삭제 보류) -->
+    <select id="selectPayrollList" resultType="Payrolls">
+        SELECT
+            p.id,
+            p.employee_id  AS employeeId,
+            p.pay_year     AS payYear,
+            p.pay_month    AS payMonth,
+            p.work_hours   AS workHours,
+            p.base_pay     AS basePay,
+            p.deduction,
+            p.net_pay      AS netPay,
+            p.paid_at      AS paidAt,
+            p.pay_type     AS payType,
+            p.note,
+            p.created_at   AS createdAt,
+            e.name         AS employeeName,
+            e.emp_num      AS employeeNo
+        FROM payrolls p
+        LEFT JOIN employees e ON p.employee_id = e.id
+        ORDER BY p.pay_year DESC, p.pay_month DESC, p.id DESC
+    </select>
+
+    <!-- 페이징 목록 (payYear / payMonth / keyword=직원명) -->
+    <select id="findPayrollByPage" parameterType="PageRequest" resultType="Payrolls">
+        SELECT
+            p.id,
+            p.employee_id  AS employeeId,
+            p.pay_year     AS payYear,
+            p.pay_month    AS payMonth,
+            p.work_hours   AS workHours,
+            p.base_pay     AS basePay,
+            p.deduction,
+            p.net_pay      AS netPay,
+            p.paid_at      AS paidAt,
+            p.note,
+            p.created_at   AS createdAt,
+            p.pay_type     AS payType,
+            e.name         AS employeeName,
+            e.emp_num      AS employeeNo
+        FROM payrolls p
+        LEFT JOIN employees e ON p.employee_id = e.id
+        <where>
+            <if test="payYear != null and payYear != ''">
+                AND p.pay_year = #{payYear}
+            </if>
+            <if test="payMonth != null and payMonth != ''">
+                AND p.pay_month = #{payMonth}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND e.name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        ORDER BY p.pay_year DESC, p.pay_month DESC, p.id DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 전체 건수 (필터 포함) -->
+    <select id="countPayroll" parameterType="PageRequest" resultType="int">
+        SELECT COUNT(*)
+        FROM payrolls p
+        LEFT JOIN employees e ON p.employee_id = e.id
+        <where>
+            <if test="payYear != null and payYear != ''">
+                AND p.pay_year = #{payYear}
+            </if>
+            <if test="payMonth != null and payMonth != ''">
+                AND p.pay_month = #{payMonth}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND e.name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 급여 등록 -->
+    <insert id="insertPayroll" parameterType="Payrolls">
+        INSERT INTO payrolls (
+            employee_id, pay_year, pay_month,
+            work_hours, base_pay, deduction, net_pay,
+            paid_at, note, pay_type
+        ) VALUES (
+            #{employeeId}, #{payYear}, #{payMonth},
+            #{workHours}, #{basePay}, #{deduction}, #{netPay},
+            #{paidAt}, #{note}, #{payType}
+        )
+    </insert>
+
+    <!-- 급여 수정 -->
+    <update id="updatePayroll" parameterType="Payrolls">
+        UPDATE payrolls
+        SET
+            employee_id = #{employeeId},
+            pay_year    = #{payYear},
+            pay_month   = #{payMonth},
+            work_hours  = #{workHours},
+            base_pay    = #{basePay},
+            deduction   = #{deduction},
+            net_pay     = #{netPay},
+            paid_at     = #{paidAt},
+            note        = #{note},
+            pay_type    = #{payType}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 급여 삭제 -->
+    <delete id="deletePayroll" parameterType="long">
+        DELETE FROM payrolls WHERE id = #{id}
+    </delete>
+
+    <!-- ===================== EMPLOYEE (수동처리용) ===================== -->
+
+    <!-- 재직 중인 직원 목록 -->
+    <select id="selectActiveEmployeeList" resultType="Employees">
+        SELECT
+            e.id,
+            e.emp_num,
+            e.name,
+            e.position,
+            e.contract_type,
+            e.is_active,
+            e.hourly_wage,
+            e.monthly_salary
+        FROM employees e
+        WHERE e.is_active = 1
+        ORDER BY e.position, e.name
+    </select>
+
+</mapper>

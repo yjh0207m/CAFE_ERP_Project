@@ -1,0 +1,25 @@
+# Secrets & Environment
+.env
+.env.*
+
+# Claude Code
+.claude/
+*/.claude/
+
+# Java / Maven build output
+target/
+*.war
+*.jar
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Log files
+*.log
+
+# Spring Boot application config (contains DB/API credentials)
+**/application.properties
+**/application-*.properties

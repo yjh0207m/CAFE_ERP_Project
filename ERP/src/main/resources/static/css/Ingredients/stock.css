@@ -1,0 +1,688 @@
+@charset "UTF-8";
+
+/* ===========================
+   CONTENT AREA
+=========================== */
+.content {
+    margin-left: var(--sidebar-width);
+    margin-top: var(--header-height);
+    padding: 28px 28px 40px;
+    min-height: calc(100vh - var(--header-height));
+    background: var(--bg-content);
+    animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   PAGE HEADER
+=========================== */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.page-title-wrap { display: flex; align-items: center; gap: 14px; }
+.page-icon { font-size: 2rem; line-height: 1; }
+
+.page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.page-sub { font-size: 0.82rem; color: var(--text-muted); margin: 3px 0 0; }
+
+/* ===========================
+   STAT CARDS
+=========================== */
+.stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.stat-icon.blue  { background: var(--primary-light); }
+.stat-icon.red   { background: var(--accent-red-light); }
+.stat-icon.green { background: var(--accent-green-light); }
+
+.stat-info .label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-info .value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2px;
+}
+
+.stat-info .value.red   { color: var(--accent-red); }
+.stat-info .value.green { color: var(--accent-green); }
+
+/* ===========================
+   TABLE CARD
+=========================== */
+.table-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.table-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1.5px solid var(--border-light);
+}
+
+.table-card-header h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ===========================
+   TABLE
+=========================== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead th {
+    background: #fafafa;
+    padding: 12px 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    text-align: center;
+    border-bottom: 1.5px solid var(--border-light);
+}
+
+.data-table tbody td {
+    padding: 13px 16px;
+    font-size: 0.88rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+}
+
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover td { background: var(--primary-light); }
+
+.empty-row td {
+    padding: 50px !important;
+    color: var(--text-muted) !important;
+    font-size: 0.88rem !important;
+    text-align: center !important;
+}
+
+/* ===========================
+   BADGE
+=========================== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-normal  { background: var(--accent-green-light);  color: var(--accent-green); }
+.badge-low     { background: var(--accent-red-light);    color: var(--accent-red); }
+.badge-warning { background: var(--accent-orange-light); color: var(--accent-orange); }
+
+/* ===========================
+   BUTTONS
+=========================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(91, 110, 245, 0.3);
+}
+
+.btn-primary:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(91, 110, 245, 0.4);
+}
+
+.btn-edit {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.btn-edit:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-delete {
+    background: var(--accent-red-light);
+    color: var(--accent-red);
+}
+
+.btn-delete:hover {
+    background: var(--accent-red);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-cancel {
+    background: var(--border-light);
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border);
+}
+
+.btn-cancel:hover {
+    background: var(--border);
+    color: var(--text-primary);
+}
+
+/* ===========================
+   MODAL
+=========================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 27, 75, 0.45);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.18s ease both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    width: 480px;
+    max-width: 95vw;
+    max-height: 88vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.22s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--border-light);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1.5px solid var(--border-light);
+}
+
+/* ===========================
+   FORM
+=========================== */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text-primary);
+    background: #fff;
+    outline: none;
+    transition: var(--transition);
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(91, 110, 245, 0.1);
+}
+
+/* ===========================
+   FORM CARD (거래처 등록)
+=========================== */
+.form-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    padding: 28px;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.form-card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--border-light);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1.5px solid var(--border-light);
+}
+
+/* ===========================
+   FILTER BAR
+=========================== */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.category-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.tab-btn {
+    padding: 7px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.tab-btn:hover  { border-color: var(--primary); color: var(--primary); }
+.tab-btn.active {
+    background: var(--primary-gradient);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(91,110,245,0.3);
+}
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.search-box input {
+    padding: 8px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+    width: 200px;
+    transition: var(--transition);
+}
+.search-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(91,110,245,0.1);
+}
+
+/* ===========================
+   PAGINATION
+=========================== */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-top: 1.5px solid var(--border-light);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.page-size-select select {
+    padding: 6px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+    cursor: pointer;
+    background: #fff;
+}
+.page-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.page-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Outfit', sans-serif;
+}
+.page-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+}
+.page-btn.active {
+    background: var(--primary-gradient);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(91,110,245,0.3);
+}
+
+/* 카테고리 뱃지 */
+.badge-category {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 0.78rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ===========================
+   CLICKABLE ROW
+=========================== */
+.clickable-row { cursor: pointer; }
+.clickable-row:hover td { background: var(--primary-light) !important; }
+
+/* ===========================
+   발주 상세 테이블
+=========================== */
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin-top: 4px;
+}
+
+.detail-table thead th {
+    background: #fafafa;
+    padding: 11px 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    border-bottom: 1.5px solid var(--border-light);
+    white-space: nowrap;
+}
+
+.detail-table tbody td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.detail-table tbody tr:last-child td { border-bottom: none; }
+.detail-table tbody tr:hover td { background: var(--primary-light); }
+
+/* 원재료명 컬럼 왼쪽 정렬 */
+.detail-table thead th:first-child { text-align: left; padding-left: 20px; }
+.detail-table tbody td:first-child  { text-align: left; padding-left: 20px; }
+
+/* ===========================
+   발주 상세 총액 행
+=========================== */
+.detail-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: var(--primary-light);
+    border-top: 1.5px solid var(--border-light);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary);
+}
+
+.detail-total .total-amount {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+/* ===========================
+   발주 등록 레이아웃
+=========================== */
+.order-layout {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 20px;
+    align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .order-layout { grid-template-columns: 1fr; }
+}
+
+/* 발주 안내 배너 */
+.supplier-banner {
+    background: var(--primary-light);
+    border: 1.5px solid rgba(91, 110, 245, 0.2);
+    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    font-size: 0.85rem;
+    color: var(--primary);
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+/* 거래처 태그 */
+.supplier-tag {
+    display: inline-block;
+    background: var(--accent-green-light);
+    color: var(--accent-green);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+/* 발주 카트 총액 */
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-top: 1.5px solid var(--border-light);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.cart-total strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+/* 다른 거래처 원재료 비활성 */
+.ingredient-row.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* ===========================
+   거래처 미등록 원재료 섹션
+=========================== */
+.no-supplier-header td {
+    background: var(--accent-red-light) !important;
+    color: var(--accent-red) !important;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-top: 2px solid rgba(239, 68, 68, 0.3);
+    text-align: left !important;
+}
+
+.no-supplier-row {
+    opacity: 0.6;
+}
+
+.no-supplier-row td {
+    background: #fff8f8 !important;
+}
+
+.no-supplier-row:hover td {
+    background: #fff0f0 !important;
+}
+
+/* ===========================
+   계약서 삭제 버튼
+=========================== */
+#edit_contract_delete_wrap {
+    margin-bottom: 10px;
+}
+
+.contract-delete-btn {
+    background: none;
+    border: 1.5px solid var(--accent-red);
+    color: var(--accent-red);
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.contract-delete-btn:hover {
+    background: var(--accent-red-light);
+}
+
+.contract-delete-btn.active {
+    background: var(--accent-red);
+    color: #fff;
+}
+
+.contract-delete-btn.active:hover {
+    opacity: 0.85;
+}

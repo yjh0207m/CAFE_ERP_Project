@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.StockLogMapper">
+
+    <insert id="insert" parameterType="StockLog">
+        INSERT INTO stock_logs
+            (ingredient_id, change_type, change_qty, before_qty, after_qty, ref_type, ref_id, note)
+        VALUES
+            (#{ingredient_id}, #{change_type}, #{change_qty}, #{before_qty}, #{after_qty},
+             #{ref_type}, #{ref_id}, #{note})
+    </insert>
+
+    <select id="findAll" resultType="StockLog">
+        SELECT * FROM stock_logs ORDER BY created_at DESC
+    </select>
+
+</mapper>
