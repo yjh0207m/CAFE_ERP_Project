@@ -6,8 +6,8 @@ String loginPosition = (String) session.getAttribute("loginPosition");
 if (loginName     == null) loginName     = "";
 if (loginPosition == null) loginPosition = "";
 
-// 등록 권한: 점장/스탭만
-boolean canWrite = "점장".equals(loginPosition) || "스탭".equals(loginPosition);
+// 등록 권한: 점장만
+boolean canWrite = "점장".equals(loginPosition);
 
 // EL에서 사용하기 위해 request attribute로 세팅
 request.setAttribute("loginName",     loginName);
@@ -320,6 +320,12 @@ function changeSize(size) {
     params.set('page', 1);
     location.href = '/notice?' + params.toString();
 }
+
+/* 헤더 드롭다운에서 넘어온 경우 해당 공지 모달 자동 오픈 */
+(function() {
+    var openId = new URLSearchParams(window.location.search).get('open');
+    if (openId) openDetailModal(openId);
+})();
 
 /* 모달 외부 클릭 닫기 */
 document.querySelectorAll('.modal-overlay').forEach(function(o) {

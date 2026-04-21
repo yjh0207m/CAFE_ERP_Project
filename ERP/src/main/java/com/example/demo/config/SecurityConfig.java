@@ -29,11 +29,11 @@ public class SecurityConfig {
                 .requestMatchers("/login", "/regist", "/css/**", "/images/**", "/ocr/**").permitAll()
                 // 공지 등록/수정/삭제 → 점장/스탭만
                 .requestMatchers("/notice/register", "/notice/update", "/notice/delete/**")
-                    .hasAnyRole("MANAGER", "STAFF")
+                    .hasAnyRole("OWNER")
                 // 공지 조회 → 전체 인증 사용자
                 .requestMatchers("/notice", "/notice/**").authenticated()
                 // ERP 사용자 관리
-                .requestMatchers("/hr/users/**").hasAnyRole("MANAGER", "STAFF")
+                .requestMatchers("/hr/users/**").hasAnyRole("OWNER")
                 // 분석용 API — Python(FastAPI) 내부 호출이므로 인증 제외
                 .requestMatchers("/api/**").permitAll()
                 // FastAPI → Spring 결과 수신 엔드포인트 — 인증 제외

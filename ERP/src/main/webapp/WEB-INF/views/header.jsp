@@ -238,7 +238,7 @@ String avatarChar = loginName.length() > 0 ? String.valueOf(loginName.charAt(0))
                     html = '<div class="notif-empty">새 공지사항이 없습니다.</div>';
                 } else {
                     list.forEach(function(n) {
-                        html += '<a class="notif-item" href="/notice">'
+                        html += '<a class="notif-item" href="/notice?open=' + n.id + '">'
                             + '<div class="notif-item-top">'
                             + '<span class="notif-imp ' + n.importance + '">'
                             + (impLabel[n.importance] || '일반') + '</span>'

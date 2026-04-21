@@ -15,9 +15,9 @@ import com.example.demo.mapper.UserMapper;
  * 사용자 입력(emp_num) → employees 조회 → users.id로 계정 조회 → 비밀번호/권한 반환
  *
  * Role 매핑 (SecurityConfig의 hasAnyRole과 맞춰야 함):
- *   점장  → ROLE_MANAGER  → hasRole("MANAGER")
- *   스탭  → ROLE_STAFF    → hasRole("STAFF")
- *   매니저 → ROLE_USER    → hasRole("USER")
+ *   점장  → ROLE_OWNER   → hasRole("OWNER")
+ *   매니저 → ROLE_MANAGER → hasRole("MANAGER")
+ *   스탭  → ROLE_STAFF   → hasRole("STAFF")
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -63,14 +63,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     /**
      * 직위 → Spring Security Role 매핑
-     * 점장  → MANAGER  (/hr/users/** 접근 가능)
-     * 스탭  → STAFF    (/hr/users/** 접근 가능)
-     * 매니저 → USER    (/hr/users/** 접근 불가)
+     * 점장  → OWNER   (/hr/users/**, /notice 쓰기 가능)
+     * 매니저 → MANAGER (/hr/users/** 접근 불가)
+     * 스탭  → STAFF   (/hr/users/** 접근 불가)
      */
     private String resolveRole(String position) {
         if (position == null) return "USER";
         switch (position) {
-            case "점장": return "MANAGER";
+            case "점장": return "OWNER"; // 점장은 모든 권한을 가짐
+            case "매니저": return "MANAGER";
             case "스탭": return "STAFF";
             default:    return "USER";
         }
