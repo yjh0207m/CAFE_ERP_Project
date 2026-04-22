@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.servlet.http.HttpSession;
 
 import com.example.demo.Domain.Attendances;
 import com.example.demo.Domain.Employees;
@@ -362,7 +363,11 @@ public class HRMController {
 	/* ===== 관리자 인증 (users 전용 AJAX) ===== */
 	@PostMapping("/users/auth")
 	@ResponseBody
-	public ResponseEntity<String> usersAuth(@RequestParam String userId, @RequestParam String userPw) {
+	public ResponseEntity<String> usersAuth(@RequestParam String userId,
+	                                        @RequestParam String userPw,
+	                                        HttpSession session) {
+		String loginEmpNum = (String) session.getAttribute("loginEmpNum");
+		if (loginEmpNum == null || !loginEmpNum.equals(userId)) return ResponseEntity.ok("fail");
 		boolean ok = userService.authenticate(userId, userPw);
 		return ResponseEntity.ok(ok ? "ok" : "fail");
 	}

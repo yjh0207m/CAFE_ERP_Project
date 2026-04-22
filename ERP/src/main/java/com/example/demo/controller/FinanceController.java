@@ -218,7 +218,10 @@ public class FinanceController {
     @PostMapping("/payroll/auth")
     @ResponseBody
     public String adminAuth(@RequestParam String userId,
-                            @RequestParam String userPw) {
+                            @RequestParam String userPw,
+                            HttpSession session) {
+        String loginEmpNum = (String) session.getAttribute("loginEmpNum");
+        if (loginEmpNum == null || !loginEmpNum.equals(userId)) return "fail";
         boolean valid = userService.login(userId, userPw);
         return valid ? "ok" : "fail";
     }
