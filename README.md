@@ -73,7 +73,7 @@
 | 구분 | 기술 |
 |---|---|
 | Framework | FastAPI (Python) |
-| AI 분석 | Claude claude-haiku-4-5 (Anthropic API) — 재무 리포트 생성 |
+| AI 분석 | claude-haiku-4-5 (Anthropic API) — 재무 리포트 생성 |
 | 수익 예측 | Prophet >= 1.1.5 (Facebook Research) — ML 기반 시계열 예측, 95% 신뢰 구간 |
 | 예측 Fallback | Holt's 이중지수평활법 — 데이터 부족 시 자동 전환 |
 | 재무 분석 | 분개장, 손익계산서, 대차대조표, 현금흐름표 자동 생성 |
@@ -92,7 +92,7 @@
 ## 프로젝트 구조
 
 ```
-ERP_Project/
+CAFE_ERP_Project/
 ├── ERP/                        # Spring Boot 메인 애플리케이션
 │   └── src/main/
 │       ├── java/com/example/demo/
@@ -113,14 +113,16 @@ ERP_Project/
 │           ├── hr/             # 인사/근태
 │           └── Notice/         # 공지사항
 └── DAP/                        # Python FastAPI 분석 서버
-    ├── main.py                 # FastAPI 엔트리포인트
+    ├── main.py                 # 분석 오케스트레이터 (전체 분석 실행 진입점)
+    ├── server.py               # FastAPI 서버 (분석 결과 저장 및 API 제공)
     ├── processing/
     │   ├── analysis.py         # Claude AI 재무 분석
     │   ├── forecast_revenue.py # 매출 예측
     │   ├── forecast_inventory.py # 재고 소진 예측
     │   ├── income.py           # 손익계산서
-    │   ├── balance.py          # 대차대조표
+    │   ├── balance.py          # 재무상태표
     │   ├── cashflow.py         # 현금흐름표
+    │   ├── capital_changes.py  # 자본변동표
     │   └── journal.py          # 분개장
     └── requirements.txt
 ```
