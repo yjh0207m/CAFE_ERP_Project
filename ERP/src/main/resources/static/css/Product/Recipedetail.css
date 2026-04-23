@@ -206,6 +206,7 @@ body { background: #f0f2ff; }
     z-index: 999;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(2px);
 }
 
 .modal-overlay.active { display: flex; }
